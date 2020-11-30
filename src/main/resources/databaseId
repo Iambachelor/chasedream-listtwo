@@ -1,0 +1,67 @@
+databaseId属性： 如果配置了 databaseIdProvider，MyBatis 会加载所有的不带 databaseId 或匹配当前 databaseId 的语句；如果带或者不带的语句都有，则不带的会被忽略。新增，修改和删除都有这个属性
+也就是说先匹配具有这个属性的语句
+
+一、在configuration.xml配置#
+<databaseIdProvider type="DB_VENDOR">
+　　<property name="MySQL" value="mysql" />
+   <property name="Oracle" value="oracle" />
+</databaseIdProvider>
+
+二、新建Mapper#
+public interface DatabaseIdProviderMapper {
+    String selectTime();
+}
+
+三、新建 DatabaseIdProvider.xml#
+
+<mapper namespace="com.yihaomen.mybatis.dao.DatabaseIdProviderMapper">
+    <select id="selectTime" resultType="String" databaseId="mysql">
+        SELECT NOW() FROM dual
+    </select>
+    <select id="selectTime" resultType="String" databaseId="oracle">
+        SELECT  'oralce'||to_char(sysdate,'yyyy-mm-dd hh24:mi:ss')  FROM dual
+    </select>
+</mapper>
+
+ 四、在configuration.xml中添加映射器#
+<mappers>
+    <mapper resource="com/yihaomen/mybatis/model/DatabaseIdProvider.xml"/>
+</mappers>
+ 
+
+ 五、jdbc.properties文件#
+
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://127.0.0.1:3306/mybatis-learn?characterEncoding=utf8
+jdbc.username=root
+jdbc.password=tiger
+
+#jdbc.driver=oracle.jdbc.driver.OracleDriver
+#jdbc.url=jdbc:oracle:thin:@localhost:1521:mybatis
+#jdbc.username=mybatis
+#jdbc.password=mybatis
+
+maxActive= 50
+
+ 
+
+ 六、测试#
+
+import com.yihaomen.mybatis.dao.DatabaseIdProviderMapper;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import user.BaseTest;
+
+public class DatabaseIdProviderTest extends BaseTest{
+
+    public static void main(String[] args) {
+        SqlSessionFactory factory = getSession();
+        SqlSession session = factory.openSession();
+        DatabaseIdProviderMapper mapper = session.getMapper(DatabaseIdProviderMapper.class);
+        System.out.println(mapper.selectTime());
+    }
+} 
+
+结果说明 
+如果当前启用的是oracle则执行databaseId=”oracle”的语句，如果mysql值执行databaseId=”mysql”的语句
+在做测试的时候很有可能，你没有加入其它的数据库测试环境那么很有可能你会出现 ### Error querying database.，你需要移除不存在的环境即可
