@@ -65,6 +65,7 @@ public interface PersonMapper {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	List getPersonByp();
 
 	/**
