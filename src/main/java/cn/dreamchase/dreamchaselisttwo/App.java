@@ -2,6 +2,7 @@ package cn.dreamchase.dreamchaselisttwo;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -81,7 +82,8 @@ public class App {
 	}
 
 	/**
-	 * 插入数据，使用 Map xml 中参数为 (#{id},#{name},#{age})
+	 * 插入数据，使用 Map xml 中参数为 (#{id},#{name},#{age}),
+	 * 当然，使用List<String,Map<String,Object>>
 	 */
 	public void insertHasParam1() {
 		SqlSession session = factory.openSession();
@@ -138,8 +140,56 @@ public class App {
 		session.close();
 	}
 
+	public void getPersonById() {
+		SqlSession session = factory.openSession();
+		PersonMapper mapper = session.getMapper(PersonMapper.class);
+		Person person = mapper.getPersonById(8);
+		System.out.println(person);
+	}
+
+	public void getPerson() {
+		SqlSession session = factory.openSession();
+		PersonMapper mapper = session.getMapper(PersonMapper.class);
+		List<Person> persons = mapper.getPerson();
+		System.out.println(persons);
+	}
+
+	/**
+	 * 这种情况下的查询，会报错
+	 */
+	public void getPersonByp() {
+		SqlSession session = factory.openSession();
+		PersonMapper mapper = session.getMapper(PersonMapper.class);
+		List persons = mapper.getPersonByp();
+		System.out.println(persons);
+	}
+	
+	/**
+	 * 查询结果，返回Map,不能查询出多条，只能查询出一条结果
+	 */
+	public void getPersonMap() {
+		SqlSession session = factory.openSession();
+		PersonMapper mapper = session.getMapper(PersonMapper.class);
+		Map<String, Object> persons = mapper.getPersonMap(1);
+		System.out.println(persons);
+	}
+	
+	public void getPersonsMap() {
+		SqlSession session = factory.openSession();
+		PersonMapper mapper = session.getMapper(PersonMapper.class);
+		Map<String, Object> persons = mapper.getPersonsMap();
+		System.out.println(persons);
+	}
+	
+	public void getPersons() {
+		SqlSession session = factory.openSession();
+		PersonMapper mapper = session.getMapper(PersonMapper.class);
+		List<Map<String, Object>> persons = mapper.getPersons();
+		System.out.println(persons);
+	}
+
 	public static void main(String[] args) {
 		App app = new App();
-		app.delete();
+		app.getPersons();
 	}
 }

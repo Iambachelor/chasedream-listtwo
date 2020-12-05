@@ -48,8 +48,50 @@
 		parameterType="cn.dreamchase.dreamchaselisttwo.pojos.Person">
 		update person set age = 30 where id = #{id}
 	</update>
-	
+
 	<delete id="delete">
 		delete from person where id = #{id}
 	</delete>
+
+	<select id="getPersonById"
+		resultType="cn.dreamchase.dreamchaselisttwo.pojos.Person">
+		select * from person where id = #{id}
+	</select>
+
+	<select id="getPerson"
+		resultType="cn.dreamchase.dreamchaselisttwo.pojos.Person">
+		select * from person
+	</select>
+
+	<select id="getPersonByp" resultType="list">
+		select * from person
+	</select>
+
+	<select id="getPersonMap" resultType="map">
+		select * from person where
+		id = #{id}
+	</select>
+
+	<!-- 需指定key，因为key是唯一的,因为是两层map 即，map.put(key,map) -->
+	<select id="getPersonsMap" resultType="HashMap">
+		select id , name, age from
+		person
+	</select>
+
+	<!-- 该查询，resultType="map"时，key 为 map对象的地址 即。list.add(存放的时map对象的地址),返回结果为[{name=张浩, 
+		id=1, age=25}, {name=彰化, id=2, age=20}, {name=张华, id=3, age=26}, {name=赵亮, 
+		id=4, age=30}, {name=王磊, id=5, age=25}, {name=叶峰, id=6, age=28}, {name=叶辰, 
+		id=7, age=28}, {name=叶辰, id=8, age=30}, {name=叶宇, id=9, age=15}, {name=叶凡, 
+		id=10, age=24}] 
+		/**************************************************************/
+		当resultType="cn.dreamchase.dreamchaselisttwo.pojos.Person"时， 
+		返回结果为 [Person [id=1, name=张浩, age=25], Person [id=2, name=彰化, age=20], Person 
+		[id=3, name=张华, age=26], Person [id=4, name=赵亮, age=30], Person [id=5, name=王磊, 
+		age=25], Person [id=6, name=叶峰, age=28], Person [id=7, name=叶辰, age=28], 
+		Person [id=8, name=叶辰, age=30], Person [id=9, name=叶宇, age=15], Person [id=10, 
+		name=叶凡, age=24]], -->
+	<select id="getPersons" resultType="map">
+		select id , name, age from
+		person
+	</select>
 </mapper>

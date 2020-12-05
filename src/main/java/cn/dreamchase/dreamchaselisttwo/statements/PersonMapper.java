@@ -3,17 +3,14 @@ package cn.dreamchase.dreamchaselisttwo.statements;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dreamchase.dreamchaselisttwo.pojos.Person;
 
 /**
- * getMapper() 方法的使用： 
- * 1. 创建Mapper接口。 
- * 2. 创建Mapper接口同名的mapper.xml文件 
- * 3. 在mapper.xml文件中的namespace属性中的值为 mapper接口的全限定性类名 
- * 4. 实例化SqlSessionFactory 
- * 5.
+ * getMapper() 方法的使用： 1. 创建Mapper接口。 2. 创建Mapper接口同名的mapper.xml文件 3.
+ * 在mapper.xml文件中的namespace属性中的值为 mapper接口的全限定性类名 4. 实例化SqlSessionFactory 5.
  * 
  * @author MENGDEFANG
  *
@@ -29,8 +26,7 @@ public interface PersonMapper {
 	int insertReturnValue(Person person);
 
 	/**
-	 * 插入数据至数据库中
-	 * 传入参数为对象
+	 * 插入数据至数据库中 传入参数为对象
 	 * 
 	 * @param person
 	 */
@@ -38,26 +34,28 @@ public interface PersonMapper {
 
 	/**
 	 * 传入参数为非对象第一种
+	 * 
 	 * @param id
 	 * @param name
 	 * @param age
 	 */
 	void insertHasParam(int id, String name, int age);
-	
+
 	/**
 	 * 传入参数使用的方式为Map
+	 * 
 	 * @param map
 	 */
-	void insertHasparam1(Map<String,Object> map);
-	
+	void insertHasparam1(Map<String, Object> map);
+
 	/**
 	 * 传入参数使用 @Param()
+	 * 
 	 * @param id
 	 * @param name
 	 * @param age
 	 */
-	void insertHashParam2(@Param("id")int id,@Param("name")String name,@Param("age")int age);
-	
+	void insertHashParam2(@Param("id") int id, @Param("name") String name, @Param("age") int age);
 
 	/**
 	 * 更新数据库中的数据
@@ -90,6 +88,7 @@ public interface PersonMapper {
 
 	/**
 	 * 查询所有的数据
+	 * 这种情况，会出现错误
 	 * 
 	 * @return
 	 */
@@ -97,11 +96,20 @@ public interface PersonMapper {
 	List getPersonByp();
 
 	/**
-	 * 查询所有的数据
+	 * 查询单条数据
 	 * 
 	 * @return
 	 */
-	Map<String, Object> getPersonMap();
+	Map<String, Object> getPersonMap(int id);
+
+	/**
+	 * 查询出所有的数据,需要指定 key
+	 * key：是从要查询表中的字段名称；当key不为表中的字段名称，那么也只能查询出一条数据
+	 * 
+	 * @return
+	 */
+	@MapKey("person")
+	Map<String, Object> getPersonsMap();
 
 	/**
 	 * 查询所有的数据
