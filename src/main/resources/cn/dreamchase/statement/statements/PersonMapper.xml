@@ -10,15 +10,46 @@
 		parameterType="cn.dreamchase.dreamchaselisttwo.pojos.Person">
 		<!-- keyProperty属性:selectkey语句结果应该被设置的目标属性 -->
 		<!-- resultType属性：结果的类型。Mybatis通常可以算出来，但是写上也没问题。Mybatis允许任何简单类型作为主键的类型，包括字符串 -->
-		<!-- order属性：这可以被设置为BEFORE或AFTER。如果设置为BEFORE，那么它会首先选择主键，设置keyProperty然后执行插入语句。
+		<!-- order属性：这可以被设置为BEFORE或AFTER。如果设置为BEFORE，那么它会首先选择主键，设置keyProperty然后执行插入语句。 
 			如果设置为AFTER，那么先执行插入语句，然后是selectkey元素。这和如oracle数据库相似，可以在插入语句中嵌套序列调用 -->
 		<!-- statementType属性：和前面胡相同,mybatis支持STATEMENT，PREPARED和CALLABLE语句映射类型。分别代表PreparedStatement和CallableStatement类型 -->
-		<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="int" statementType="STATEMENT">
+		<selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+			resultType="int" statementType="STATEMENT">
 			select LAST_INSERT_ID()
 		</selectKey>
 		insert into person(id,name,age)
-		values(#{id},#{name},{age})
+		values(#{id},#{name},#{age})
 	</insert>
+
+	<!-- 插入数据，无返回值 -->
+	<insert id="insertHasParam">
+		insert into person(id,name,age)
+		values(#{arg0},#{arg1},#{arg2})
+	</insert>
+
+	<insert id="insertHasparam1" parameterType="map">
+		insert into
+		person(id,name,age)
+		values(#{id},#{name},#{age})
+	</insert>
+
+	<insert id="insertHashParam2">
+		insert into person(id,name,age)
+		values(#{id},#{name},#{age})
+	</insert>
+
+	<insert id="insert">
+		insert into person(id,name,age)
+		values(#{id},#{name},#{age})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update"
+		parameterType="cn.dreamchase.dreamchaselisttwo.pojos.Person">
+		update person set age = 30 where id = #{id}
+	</update>
 	
-	
+	<delete id="delete">
+		delete from person where id = #{id}
+	</delete>
 </mapper>

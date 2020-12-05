@@ -21,6 +21,6 @@
 	</environments>
 
 	<mappers>
-		<mapper resource="cn/dreamchase/statement/mapper.xml" />
+		<mapper resource="cn/dreamchase/statement/statements/PersonMapper.xml" />
 	</mappers>
 </configuration>

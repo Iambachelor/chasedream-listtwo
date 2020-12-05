@@ -3,6 +3,8 @@ package cn.dreamchase.dreamchaselisttwo.statements;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.dreamchase.dreamchaselisttwo.pojos.Person;
 
 /**
@@ -40,7 +42,21 @@ public interface PersonMapper {
 	 * @param name
 	 * @param age
 	 */
-	void insert(int id, String name, int age);
+	void insertHasParam(int id, String name, int age);
+	
+	/**
+	 * 传入参数使用的方式为Map
+	 * @param map
+	 */
+	void insertHasparam1(Map<String,Object> map);
+	
+	/**
+	 * 传入参数使用 @Param()
+	 * @param id
+	 * @param name
+	 * @param age
+	 */
+	void insertHashParam2(@Param("id")int id,@Param("name")String name,@Param("age")int age);
 	
 
 	/**
